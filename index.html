@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>赛友 | 大学生赛事成长服务平台</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          primary: '#6D4AFF',
+          'primary-deep': '#5236CC',
+          accent: '#FF5E99',
+          bg: '#FAFAFE',
+          'text-main': '#1E1B4B',
+          'text-body': '#4F46E5',
+          'text-muted': '#6B7280',
+        },
+        maxWidth: { '6xl': '1152px' },
+      }
+    }
+  }
+</script>
+<style>
+  html { scroll-behavior: smooth; }
+  body { font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+  .card-shadow {
+    box-shadow: 0 4px 20px -2px rgba(109, 74, 255, 0.04), 0 2px 8px -1px rgba(0, 0, 0, 0.02);
+  }
+  .card-hover:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px -4px rgba(109, 74, 255, 0.08), 0 4px 12px -2px rgba(0, 0, 0, 0.04);
+  }
+  /* Funnel blocks */
+  .funnel-1 { width: 100%; }
+  .funnel-2 { width: 64.2%; }
+  .funnel-3 { width: 37.2%; }
+  /* Bar chart animation */
+  .bar-fill { transition: width 1.2s cubic-bezier(0.22, 1, 0.36, 1); }
+  .bar-visible .bar-fill { width: var(--bar-w); }
+  /* Donut */
+  .donut-ring { stroke: #F3F0FF; }
+  .donut-segment { stroke: #6D4AFF; transition: stroke-dashoffset 1s ease-out; }
+  /* Mobile menu */
+  .mobile-menu { max-height: 0; overflow: hidden; transition: max-height 0.35s ease; }
+  .mobile-menu.open { max-height: 420px; }
+  /* Tab */
+  .tab-btn.active { background: #6D4AFF; color: #fff; }
+  .tab-btn:not(.active) { background: #F3F0FF; color: #5236CC; }
+  @media (min-width: 768px) { .mobile-menu { max-height: none !important; } }
+</style>
+</head>
+<body class="bg-bg text-text-main antialiased">
+
+<!-- ===== NAVIGATION ===== -->
+<nav class="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-100">
+  <div class="max-w-6xl mx-auto px-4 md:px-6 flex items-center justify-between h-16">
+    <!-- Logo -->
+    <a href="#hero" class="flex items-center gap-2.5 shrink-0">
+      <svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="#6D4AFF"/><path d="M8 22V12l4 6 4-6v10M20 12v10l4-5 4 5V12" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span class="font-bold text-[15px] text-primary-deep hidden sm:inline">赛友<span class="text-text-muted font-normal text-[13px] ml-1">| 大学生赛事成长服务平台</span></span>
+    </a>
+    <!-- Desktop links -->
+    <div class="hidden md:flex items-center gap-7 text-[14px] font-medium text-text-muted">
+      <a href="#positioning" class="hover:text-primary transition-colors">产品定位</a>
+      <a href="#market" class="hover:text-primary transition-colors">市场背景</a>
+      <a href="#segments" class="hover:text-primary transition-colors">用户画像</a>
+      <a href="#quantitative" class="hover:text-primary transition-colors">调研数据</a>
+      <a href="#qualitative" class="hover:text-primary transition-colors">个案深访</a>
+      <a href="#requirements" class="hover:text-primary transition-colors">功能映射</a>
+    </div>
+    <a href="#" class="hidden md:inline-flex bg-primary text-white text-[14px] font-semibold px-5 py-2.5 rounded-xl hover:bg-primary-deep transition-all duration-300 shadow-sm hover:shadow-md">立即体验</a>
+    <!-- Hamburger -->
+    <button onclick="document.getElementById('mobileMenu').classList.toggle('open')" class="md:hidden p-2 text-text-main">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+    </button>
+  </div>
+  <!-- Mobile menu -->
+  <div id="mobileMenu" class="mobile-menu md:hidden bg-white border-t border-gray-100">
+    <div class="flex flex-col px-4 py-3 gap-2 text-[14px] font-medium text-text-muted">
+      <a href="#positioning" class="py-2 hover:text-primary" onclick="document.getElementById('mobileMenu').classList.remove('open')">产品定位</a>
+      <a href="#market" class="py-2 hover:text-primary" onclick="document.getElementById('mobileMenu').classList.remove('open')">市场背景</a>
+      <a href="#segments" class="py-2 hover:text-primary" onclick="document.getElementById('mobileMenu').classList.remove('open')">用户画像</a>
+      <a href="#quantitative" class="py-2 hover:text-primary" onclick="document.getElementById('mobileMenu').classList.remove('open')">调研数据</a>
+      <a href="#qualitative" class="py-2 hover:text-primary" onclick="document.getElementById('mobileMenu').classList.remove('open')">个案深访</a>
+      <a href="#requirements" class="py-2 hover:text-primary" onclick="document.getElementById('mobileMenu').classList.remove('open')">功能映射</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ===== HERO ===== -->
+<section id="hero" class="max-w-6xl mx-auto px-4 md:px-6 pt-20 pb-16 md:pt-28 md:pb-24">
+  <div class="max-w-3xl">
+    <div class="inline-flex items-center gap-2 bg-[#F3F0FF] text-primary text-[13px] font-semibold px-3.5 py-1.5 rounded-full mb-6">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#6D4AFF" stroke-width="3"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+      大学生赛事服务平台的商业化创新实践
+    </div>
+    <h1 class="text-4xl md:text-5xl lg:text-[56px] font-bold leading-[1.15] tracking-tight text-text-main">
+      一站式<span class="text-primary">数字化组队解决方案</span>
+    </h1>
+    <p class="text-[17px] md:text-lg text-text-muted mt-5 leading-relaxed max-w-xl">
+      以信用背书与AI精准撮合为核心，重新定义大学生竞赛组队体验——从找人到协作，一站式闭环。
+    </p>
+  </div>
+
+  <!-- Value Props -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mt-14">
+    <div class="bg-white card-shadow rounded-2xl p-6 card-hover transition-all duration-300">
+      <div class="w-10 h-10 rounded-xl bg-[#F3F0FF] flex items-center justify-center mb-4">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6D4AFF" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+      </div>
+      <h3 class="font-semibold text-[15px] text-text-main">AI智能匹配</h3>
+      <p class="text-[13px] text-text-muted mt-1.5 leading-relaxed">基于技能标签、兴趣向量与目标赛事，实现千人千面的精准组队推荐</p>
+    </div>
+    <div class="bg-white card-shadow rounded-2xl p-6 card-hover transition-all duration-300">
+      <div class="w-10 h-10 rounded-xl bg-[#FFF0F6] flex items-center justify-center mb-4">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FF5E99" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      </div>
+      <h3 class="font-semibold text-[15px] text-text-main">信用体系保障</h3>
+      <p class="text-[13px] text-text-muted mt-1.5 leading-relaxed">学信网双重认证 + 赛友信用分，构建可信协作环境，告别简历注水</p>
+    </div>
+    <div class="bg-white card-shadow rounded-2xl p-6 card-hover transition-all duration-300">
+      <div class="w-10 h-10 rounded-xl bg-[#F3F0FF] flex items-center justify-center mb-4">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6D4AFF" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+      </div>
+      <h3 class="font-semibold text-[15px] text-text-main">全周期协作支持</h3>
+      <p class="text-[13px] text-text-muted mt-1.5 leading-relaxed">从组队、任务看板到文档协同，覆盖立项→打磨→提交全流程</p>
+    </div>
+    <div class="bg-white card-shadow rounded-2xl p-6 card-hover transition-all duration-300">
+      <div class="w-10 h-10 rounded-xl bg-[#FFF0F6] flex items-center justify-center mb-4">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FF5E99" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+      </div>
+      <h3 class="font-semibold text-[15px] text-text-main">价值共创成长</h3>
+      <p class="text-[13px] text-text-muted mt-1.5 leading-relaxed">赛后知识沉淀与经验分享，让每次参赛都成为可复用的团队资产</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 1. PRODUCT POSITIONING ===== -->
+<section id="positioning" class="bg-white py-20 md:py-24">
+  <div class="max-w-6xl mx-auto px-4 md:px-6">
+    <div class="flex flex-col md:flex-row gap-12 md:gap-16 items-center">
+      <!-- Left -->
+      <div class="flex-1">
+        <span class="text-[13px] font-bold uppercase tracking-widest text-primary">Product Positioning</span>
+        <h2 class="text-3xl md:text-4xl font-bold mt-3 text-text-main leading-tight">以"信用背书 + AI精准撮合"为核心<br>一站式竞赛组队与协作管理平台</h2>
+        <p class="text-text-muted mt-5 leading-relaxed text-[15px]">赛友重新定义大学生竞赛组队——不再是松散的信息广播，而是以信用背书与AI精准撮合为核心的价值共创平台。通过将技能、经验等能力标签显性化、可验证化，实现供需双方的精准耦合。</p>
+        <div class="mt-7 space-y-4">
+          <div class="flex items-start gap-3"><div class="w-6 h-6 rounded-lg bg-[#F3F0FF] flex items-center justify-center shrink-0 mt-0.5"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#6D4AFF" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div><div><span class="font-semibold text-text-main text-[14px]">服务对象</span><span class="text-text-muted text-[14px]">：有竞赛意愿的在校大学生（达人与小白）、指导教师</span></div></div>
+          <div class="flex items-start gap-3"><div class="w-6 h-6 rounded-lg bg-[#FFF0F6] flex items-center justify-center shrink-0 mt-0.5"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#FF5E99" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div><div><span class="font-semibold text-text-main text-[14px]">核心痛点</span><span class="text-text-muted text-[14px]">：找队友难、信息不对称无法验证真实能力、信任缺失、目标错配</span></div></div>
+          <div class="flex items-start gap-3"><div class="w-6 h-6 rounded-lg bg-[#F3F0FF] flex items-center justify-center shrink-0 mt-0.5"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#6D4AFF" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div><div><span class="font-semibold text-text-main text-[14px]">服务目标</span><span class="text-text-muted text-[14px]">：让每个学生都能快速找到目标一致、能力互补的可靠队友</span></div></div>
+        </div>
+      </div>
+      <!-- Right: visual -->
+      <div class="flex-1 flex justify-center">
+        <div class="bg-bg rounded-2xl p-8 w-full max-w-sm card-shadow">
+          <div class="flex items-center gap-3 pb-4 border-b border-gray-100">
+            <div class="w-9 h-9 rounded-full bg-primary flex items-center justify-center text-white text-[13px] font-bold">S</div>
+            <div><div class="text-[14px] font-semibold text-text-main">赛友匹配引擎</div><div class="text-[11px] text-text-muted">AI-Powered</div></div>
+          </div>
+          <div class="mt-4 space-y-3">
+            <div class="flex items-center justify-between text-[13px]"><span class="text-text-muted">技能标签匹配</span><span class="font-semibold text-primary">94.2%</span></div>
+            <div class="h-1.5 rounded-full bg-gray-100"><div class="h-1.5 rounded-full bg-primary" style="width:94.2%"></div></div>
+            <div class="flex items-center justify-between text-[13px]"><span class="text-text-muted">目标赛事对齐</span><span class="font-semibold text-primary">88.7%</span></div>
+            <div class="h-1.5 rounded-full bg-gray-100"><div class="h-1.5 rounded-full bg-primary" style="width:88.7%"></div></div>
+            <div class="flex items-center justify-between text-[13px]"><span class="text-text-muted">信用分验证</span><span class="font-semibold text-accent">100%</span></div>
+            <div class="h-1.5 rounded-full bg-gray-100"><div class="h-1.5 rounded-full bg-accent" style="width:100%"></div></div>
+            <div class="flex items-center justify-between text-[13px]"><span class="text-text-muted">协作风格兼容</span><span class="font-semibold text-primary">81.6%</span></div>
+            <div class="h-1.5 rounded-full bg-gray-100"><div class="h-1.5 rounded-full bg-primary" style="width:81.6%"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 2. MARKET ANALYSIS ===== -->
+<section id="market" class="py-20 md:py-24">
+  <div class="max-w-6xl mx-auto px-4 md:px-6">
+    <span class="text-[13px] font-bold uppercase tracking-widest text-primary">Market Analysis</span>
+    <h2 class="text-3xl md:text-4xl font-bold mt-3 text-text-main leading-tight">高校竞赛全面"内卷化"：<br>从精英赛道到全员刚需</h2>
+    <p class="text-text-muted mt-4 max-w-2xl text-[15px] leading-relaxed">"互联网+"、"挑战杯"等头部赛事报名量连年激增。保研加分、综测排名、简历竞争力三大杠杆驱动下，<strong class="text-text-main">竞赛组队已成为数千万大学生的刚需场景</strong>——然而供需匹配效率严重滞后。</p>
+
+    <!-- Chart Row -->
+    <div class="grid grid-cols-1 lg:grid-cols-5 gap-8 mt-12">
+      <!-- Bar Chart -->
+      <div class="lg:col-span-3 bg-white card-shadow rounded-2xl p-6 md:p-8">
+        <h3 class="text-[15px] font-semibold text-text-main mb-6">参赛人次增长趋势（2022–2026E）</h3>
+        <div class="flex items-end gap-5 md:gap-8 h-52 mb-4">
+          <div class="flex-1 flex flex-col items-center gap-1.5">
+            <span class="text-[13px] font-bold text-primary">1120<small class="text-[11px] font-normal text-text-muted">万</small></span>
+            <div class="w-full bg-primary rounded-t-lg bar-fill transition-all duration-1000" style="height:112px; width:100%"></div>
+            <span class="text-[11px] text-text-muted">2022</span>
+          </div>
+          <div class="flex-1 flex flex-col items-center gap-1.5">
+            <span class="text-[13px] font-bold text-primary">1380<small class="text-[11px] font-normal text-text-muted">万</small></span>
+            <div class="w-full bg-primary rounded-t-lg bar-fill transition-all duration-1000" style="height:138px; width:100%"></div>
+            <span class="text-[11px] text-text-muted">2023</span>
+          </div>
+          <div class="flex-1 flex flex-col items-center gap-1.5">
+            <span class="text-[13px] font-bold text-primary">1670<small class="text-[11px] font-normal text-text-muted">万</small></span>
+            <div class="w-full bg-primary rounded-t-lg bar-fill transition-all duration-1000" style="height:167px; width:100%"></div>
+            <span class="text-[11px] text-text-muted">2024</span>
+          </div>
+          <div class="flex-1 flex flex-col items-center gap-1.5">
+            <span class="text-[13px] font-bold text-primary">2020<small class="text-[11px] font-normal text-text-muted">万</small></span>
+            <div class="w-full bg-primary/70 rounded-t-lg bar-fill transition-all duration-1000" style="height:202px; width:100%"></div>
+            <span class="text-[11px] text-text-muted">2025E</span>
+          </div>
+          <div class="flex-1 flex flex-col items-center gap-1.5">
+            <span class="text-[13px] font-bold text-accent">2443<small class="text-[11px] font-normal text-text-muted">万</small></span>
+            <div class="w-full bg-accent rounded-t-lg bar-fill transition-all duration-1000" style="height:244px; width:100%"></div>
+            <span class="text-[11px] text-text-muted">2026E</span>
+          </div>
+        </div>
+        <div class="flex items-center gap-4 text-[12px] text-text-muted mt-4 pt-4 border-t border-gray-50">
+          <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-sm bg-primary inline-block"></span>历史数据</span>
+          <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-sm bg-accent inline-block"></span>预测值</span>
+          <span class="ml-auto font-semibold text-text-main">CAGR <span class="text-accent">14.2%</span></span>
+        </div>
+      </div>
+
+      <!-- Donut Chart -->
+      <div class="lg:col-span-2 bg-white card-shadow rounded-2xl p-6 md:p-8 flex flex-col items-center justify-center">
+        <h3 class="text-[15px] font-semibold text-text-main mb-4 text-center">金奖项目团队构成</h3>
+        <div class="relative w-44 h-44">
+          <svg viewBox="0 0 140 140" class="w-full h-full -rotate-90">
+            <circle cx="70" cy="70" r="52" fill="none" stroke="#F3F0FF" stroke-width="28"/>
+            <circle cx="70" cy="70" r="52" fill="none" stroke="#6D4AFF" stroke-width="28"
+              stroke-dasharray="327" stroke-dashoffset="48" stroke-linecap="round"/>
+          </svg>
+          <div class="absolute inset-0 flex flex-col items-center justify-center">
+            <span class="text-3xl font-bold text-primary">85.3<small class="text-sm text-text-muted">%</small></span>
+            <span class="text-[11px] text-text-muted text-center leading-tight mt-1">跨学院<br>复合型团队</span>
+          </div>
+        </div>
+        <div class="mt-5 space-y-2 text-[13px] text-text-muted w-full">
+          <div class="flex items-center justify-between"><span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-primary"></span>新工科 + 新商科 + UI设计</span><span class="font-semibold text-text-main">58.2%</span></div>
+          <div class="flex items-center justify-between"><span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-[#B19EFF]"></span>理工 + 经管 + 人文</span><span class="font-semibold text-text-main">27.1%</span></div>
+          <div class="flex items-center justify-between"><span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-[#DDD4FF]"></span>跨校联合</span><span class="font-semibold text-text-main">14.7%</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 3. USER SEGMENTATION ===== -->
+<section id="segments" class="bg-white py-20 md:py-24">
+  <div class="max-w-6xl mx-auto px-4 md:px-6">
+    <span class="text-[13px] font-bold uppercase tracking-widest text-primary">User Segmentation</span>
+    <h2 class="text-3xl md:text-4xl font-bold mt-3 text-text-main leading-tight">三类核心用户画像</h2>
+    <p class="text-text-muted mt-3 text-[15px]">基于访谈编码与问卷聚类分析，识别竞赛组队场景下的三种典型行为模式</p>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-10 max-w-3xl mx-auto">
+      <!-- Card 1 -->
+      <div class="bg-bg rounded-2xl p-7 card-shadow card-hover transition-all duration-300 border border-transparent hover:border-[#F3F0FF]">
+        <div class="w-12 h-12 rounded-xl bg-primary flex items-center justify-center mb-5">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M12 15l-2 5h4l-2-5zM12 4v8"/><circle cx="12" cy="4" r="2"/><path d="M8 8c-3.3 1.7-5.5 5-5.5 8.9V19h19v-2.1c0-3.9-2.2-7.2-5.5-8.9"/></svg>
+        </div>
+        <span class="text-[11px] font-bold uppercase tracking-wider text-accent bg-[#FFF0F6] px-2.5 py-1 rounded-full">竞赛达人</span>
+        <h3 class="text-xl font-bold mt-3 text-text-main">竞赛达人组</h3>
+        <p class="text-[13px] text-text-muted mt-2 leading-relaxed">大三/大四，手握多项国奖。技术能力过硬，项目经验丰富。寻找强力队友或靠谱执行者来冲击更高奖项。</p>
+        <div class="mt-4 pt-4 border-t border-gray-200/60">
+          <div class="text-[12px] text-text-muted"><span class="font-semibold text-text-main">核心动机：</span>降低"被执行者拖累"的风险</div>
+          <div class="text-[12px] text-text-muted mt-1"><span class="font-semibold text-text-main">高频场景：</span>发布招募→筛选简历→面试组队</div>
+        </div>
+      </div>
+      <!-- Card 2 -->
+      <div class="bg-bg rounded-2xl p-7 card-shadow card-hover transition-all duration-300 border border-transparent hover:border-[#F3F0FF]">
+        <div class="w-12 h-12 rounded-xl bg-accent flex items-center justify-center mb-5">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><circle cx="12" cy="10" r="3"/><path d="M12 2v4M12 14v8M5.6 5.6l2.8 2.8M15.6 15.6l2.8 2.8M2 12h4M18 12h8"/></svg>
+        </div>
+        <span class="text-[11px] font-bold uppercase tracking-wider text-primary bg-[#F3F0FF] px-2.5 py-1 rounded-full">竞赛小白</span>
+        <h3 class="text-xl font-bold mt-3 text-text-main">竞赛小白组</h3>
+        <p class="text-[13px] text-text-muted mt-2 leading-relaxed">大一/大二，有热情无经验。希望通过参与竞赛丰富简历、学习成长。最大困惑是"从哪里开始"和"谁愿意带我"。</p>
+        <div class="mt-4 pt-4 border-t border-gray-200/60">
+          <div class="text-[12px] text-text-muted"><span class="font-semibold text-text-main">核心动机：</span>打破"小白进场无门"的壁垒</div>
+          <div class="text-[12px] text-text-muted mt-1"><span class="font-semibold text-text-main">高频场景：</span>浏览招募→投递申请→等待回应</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 4. QUANTITATIVE ANALYSIS ===== -->
+<section id="quantitative" class="py-20 md:py-24">
+  <div class="max-w-6xl mx-auto px-4 md:px-6">
+    <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+      <div>
+        <span class="text-[13px] font-bold uppercase tracking-widest text-primary">Quantitative Research</span>
+        <h2 class="text-3xl md:text-4xl font-bold mt-3 text-text-main leading-tight">问卷定量分析</h2>
+      </div>
+      <div class="inline-flex items-center gap-2 bg-[#F3F0FF] text-primary-deep text-[12px] font-medium px-3.5 py-2 rounded-xl">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg>
+        全国 50 所高校 · N = 1,246 份有效问卷 · 交叉验证
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-10">
+      <!-- Horizontal Bar Chart -->
+      <div class="bg-white card-shadow rounded-2xl p-6 md:p-8">
+        <h3 class="text-[15px] font-semibold text-text-main mb-6">用户痛点排行榜</h3>
+        <div class="space-y-5">
+          <div>
+            <div class="flex justify-between text-[13px] mb-1.5"><span class="font-medium text-text-main">队友中途跑路 / 关键时刻玩失踪</span><span class="font-bold text-accent">78.3%</span></div>
+            <div class="h-2.5 rounded-full bg-gray-100"><div class="h-2.5 rounded-full bg-accent" style="width:78.3%"></div></div>
+          </div>
+          <div>
+            <div class="flex justify-between text-[13px] mb-1.5"><span class="font-medium text-text-main">信息不对称，无法验证对方真实能力</span><span class="font-bold text-primary">61.5%</span></div>
+            <div class="h-2.5 rounded-full bg-gray-100"><div class="h-2.5 rounded-full bg-primary" style="width:61.5%"></div></div>
+          </div>
+          <div>
+            <div class="flex justify-between text-[13px] mb-1.5"><span class="font-medium text-text-main">跨院系交流难，社交圈层固化</span><span class="font-bold text-primary">54.1%</span></div>
+            <div class="h-2.5 rounded-full bg-gray-100"><div class="h-2.5 rounded-full bg-primary" style="width:54.1%"></div></div>
+          </div>
+          <div>
+            <div class="flex justify-between text-[13px] mb-1.5"><span class="font-medium text-text-main">团队缺乏契约，项目进度拖延</span><span class="font-bold text-primary">45.8%</span></div>
+            <div class="h-2.5 rounded-full bg-gray-100"><div class="h-2.5 rounded-full bg-primary" style="width:45.8%"></div></div>
+          </div>
+        </div>
+        <p class="text-[11px] text-text-muted mt-5 pt-4 border-t border-gray-50">数据来源：赛友团队面向全国50所高校大学生发放问卷，N=1,246，Cronbach's α=0.87</p>
+      </div>
+
+      <!-- Funnel Chart -->
+      <div class="bg-white card-shadow rounded-2xl p-6 md:p-8">
+        <h3 class="text-[15px] font-semibold text-text-main mb-6">传统渠道组队转化漏斗</h3>
+        <div class="space-y-0">
+          <!-- Stage 1 -->
+          <div class="funnel-1 mx-auto">
+            <div class="bg-primary text-white rounded-xl px-5 py-4 text-center">
+              <span class="text-2xl font-bold">100%</span>
+              <p class="text-[13px] opacity-90 mt-0.5">意向阶段：产生参赛/组队意愿</p>
+            </div>
+          </div>
+          <div class="flex justify-center">
+            <svg width="24" height="18" viewBox="0 0 24 18"><polygon points="12,18 0,0 24,0" fill="#F3F0FF"/></svg>
+          </div>
+          <!-- Stage 2 -->
+          <div class="funnel-2 mx-auto">
+            <div class="bg-[#B19EFF] text-white rounded-xl px-5 py-4 text-center">
+              <span class="text-xl font-bold">64.2%</span>
+              <p class="text-[13px] opacity-90 mt-0.5">组队阶段：成功匹配到队友</p>
+              <p class="text-[11px] opacity-70 mt-1">损耗 35.8%（放弃/无回应/匹配失败）</p>
+            </div>
+          </div>
+          <div class="flex justify-center">
+            <svg width="24" height="18" viewBox="0 0 24 18"><polygon points="12,18 0,0 24,0" fill="#F3F0FF"/></svg>
+          </div>
+          <!-- Stage 3 -->
+          <div class="funnel-3 mx-auto">
+            <div class="bg-accent text-white rounded-xl px-5 py-4 text-center">
+              <span class="text-xl font-bold">37.2%</span>
+              <p class="text-[13px] opacity-90 mt-0.5">提交阶段：完成项目并成功参赛</p>
+              <p class="text-[11px] opacity-70 mt-1">严重流产损耗 42.1%（内部冲突/能力不足）</p>
+            </div>
+          </div>
+        </div>
+        <p class="text-[11px] text-text-muted mt-5 text-center">仅 37.2% 的组队意向能走到最终提交——<strong class="text-accent">近2/3的团队在中途解散</strong></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 5. QUALITATIVE INTERVIEW ===== -->
+<section id="qualitative" class="bg-white py-20 md:py-24">
+  <div class="max-w-6xl mx-auto px-4 md:px-6">
+    <span class="text-[13px] font-bold uppercase tracking-widest text-primary">Qualitative Insights</span>
+    <h2 class="text-3xl md:text-4xl font-bold mt-3 text-text-main leading-tight">用户个案深访分析</h2>
+    <p class="text-text-muted mt-3 text-[15px]">基于AITurk平台半结构化访谈，N=20（达人组10人 + 小白组10人），结合小红书111条二手数据交叉验证</p>
+
+    <!-- Tabs -->
+    <div class="flex gap-3 mt-8">
+      <button onclick="switchTab(0)" id="tabBtn0" class="tab-btn active text-[14px] font-semibold px-5 py-2.5 rounded-xl transition-all duration-200">Persona 1 · 小林</button>
+      <button onclick="switchTab(1)" id="tabBtn1" class="tab-btn text-[14px] font-semibold px-5 py-2.5 rounded-xl transition-all duration-200">Persona 2 · Heather</button>
+    </div>
+
+    <!-- Tab Content 1 -->
+    <div id="tab0" class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-8">
+      <div class="bg-bg rounded-2xl p-7 card-shadow">
+        <div class="flex items-center gap-4 mb-5">
+          <div class="w-14 h-14 rounded-full bg-primary flex items-center justify-center text-white text-xl font-bold">林</div>
+          <div>
+            <h3 class="text-lg font-bold text-text-main">小林</h3>
+            <p class="text-[13px] text-text-muted">21岁 · 大三 · 计算机科学与技术</p>
+            <p class="text-[11px] text-accent font-semibold mt-0.5">竞赛达人组 · 国奖获得者</p>
+          </div>
+        </div>
+        <div class="relative bg-white rounded-xl p-5 border border-gray-100">
+          <div class="absolute -top-2.5 left-5 w-0 h-0 border-l-[8px] border-r-[8px] border-b-[12px] border-l-transparent border-r-transparent border-b-white"></div>
+          <p class="text-[14px] text-text-main leading-relaxed italic">"商科队友赛前三天突然说'考试冲突不来了'，我一个人熬夜补完商业计划书。这种事情不是第一次了——发帖时个个都说自己有经验、有资源，进了组才发现连基本的数据分析都做不利索。"</p>
+        </div>
+        <div class="mt-5 space-y-2.5">
+          <div class="flex items-start gap-2 text-[13px] text-text-muted"><span class="shrink-0 mt-0.5">🔍</span><span><strong class="text-text-main">深层动机：</strong>多次被"搭便车"后形成防御心态。核心恐惧不是队友能力不足，而是<em class="text-accent not-italic font-medium">责任不对等</em>——自己全力以赴，队友却随时撤退。</span></div>
+          <div class="flex items-start gap-2 text-[13px] text-text-muted"><span class="shrink-0 mt-0.5">💡</span><span><strong class="text-text-main">平台启示：</strong>信用体系必须追溯历史行为（参赛完成率、队友评价），而非仅靠技能标签。退出惩罚机制是刚需。</span></div>
+        </div>
+      </div>
+      <div class="bg-bg rounded-2xl p-7 card-shadow flex flex-col justify-center">
+        <h4 class="text-[13px] font-bold uppercase tracking-wider text-text-muted mb-4">访谈编码提炼</h4>
+        <div class="space-y-3">
+          <div class="flex flex-wrap gap-2"><span class="text-[12px] bg-white px-3 py-1.5 rounded-lg border border-gray-100 text-text-main">关系型失信</span><span class="text-[12px] bg-white px-3 py-1.5 rounded-lg border border-gray-100 text-text-main">技能注水</span><span class="text-[12px] bg-white px-3 py-1.5 rounded-lg border border-gray-100 text-text-main">临时退出</span></div>
+          <div class="flex flex-wrap gap-2"><span class="text-[12px] bg-[#FFF0F6] px-3 py-1.5 rounded-lg text-accent font-medium">搭便车行为</span><span class="text-[12px] bg-[#FFF0F6] px-3 py-1.5 rounded-lg text-accent font-medium">沉没成本焦虑</span></div>
+        </div>
+        <div class="mt-5 p-4 bg-white rounded-xl border border-gray-100">
+          <p class="text-[12px] text-text-muted leading-relaxed"><strong class="text-text-main">设计方向：</strong>引入"历史参赛记录可追溯 + 队友互评信用分 + 退出惩罚机制（信用分扣减）"，将隐性风险显性化。</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tab Content 2 (hidden by default) -->
+    <div id="tab1" class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-8 hidden">
+      <div class="bg-bg rounded-2xl p-7 card-shadow">
+        <div class="flex items-center gap-4 mb-5">
+          <div class="w-14 h-14 rounded-full bg-accent flex items-center justify-center text-white text-xl font-bold">H</div>
+          <div>
+            <h3 class="text-lg font-bold text-text-main">Heather</h3>
+            <p class="text-[13px] text-text-muted">19岁 · 大二 · 会计学</p>
+            <p class="text-[11px] text-accent font-semibold mt-0.5">竞赛小白组 · 首次尝试参赛</p>
+          </div>
+        </div>
+        <div class="relative bg-white rounded-xl p-5 border border-gray-100">
+          <div class="absolute -top-2.5 left-5 w-0 h-0 border-l-[8px] border-r-[8px] border-b-[12px] border-l-transparent border-r-transparent border-b-white"></div>
+          <p class="text-[14px] text-text-main leading-relaxed italic">"群里大牛发帖招人，我私聊发了简历就再也没收到回复。已经投了七八个招募了，基本都是石沉大海。有时候看到招募要求写着'有国奖经验优先'，我连投的勇气都没有——可是如果没人给我第一次机会，我永远不会有经验啊。"</p>
+        </div>
+        <div class="mt-5 space-y-2.5">
+          <div class="flex items-start gap-2 text-[13px] text-text-muted"><span class="shrink-0 mt-0.5">🔍</span><span><strong class="text-text-main">深层动机：</strong>信息不对称带来的排除效应——不仅仅是技能不匹配，而是<em class="text-accent not-italic font-medium">无法证明自己的潜力与诚意</em>。沉默的拒绝比明确的反馈更令人沮丧。</span></div>
+          <div class="flex items-start gap-2 text-[13px] text-text-muted"><span class="shrink-0 mt-0.5">💡</span><span><strong class="text-text-main">平台启示：</strong>需提供"匿名浏览"与"AI帮写申请"降低表达门槛。为小白建立成长可见性——学习时长、态度评分等替代性信号。</span></div>
+        </div>
+      </div>
+      <div class="bg-bg rounded-2xl p-7 card-shadow flex flex-col justify-center">
+        <h4 class="text-[13px] font-bold uppercase tracking-wider text-text-muted mb-4">访谈编码提炼</h4>
+        <div class="space-y-3">
+          <div class="flex flex-wrap gap-2"><span class="text-[12px] bg-white px-3 py-1.5 rounded-lg border border-gray-100 text-text-main">社交恐惧</span><span class="text-[12px] bg-white px-3 py-1.5 rounded-lg border border-gray-100 text-text-main">回应恐惧</span><span class="text-[12px] bg-white px-3 py-1.5 rounded-lg border border-gray-100 text-text-main">圈子壁垒</span></div>
+          <div class="flex flex-wrap gap-2"><span class="text-[12px] bg-[#F3F0FF] px-3 py-1.5 rounded-lg text-primary font-medium">信号缺失</span><span class="text-[12px] bg-[#F3F0FF] px-3 py-1.5 rounded-lg text-primary font-medium">马太效应</span></div>
+        </div>
+        <div class="mt-5 p-4 bg-white rounded-xl border border-gray-100">
+          <p class="text-[12px] text-text-muted leading-relaxed"><strong class="text-text-main">设计方向：</strong>为小白提供替代性信用信号（学习时长、态度评分、技能测试成绩），打破"经验悖论"——没有经验找不到机会，没有机会永远没经验。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 6. REQUIREMENT SUMMARY ===== -->
+<section id="requirements" class="py-20 md:py-24">
+  <div class="max-w-6xl mx-auto px-4 md:px-6">
+    <span class="text-[13px] font-bold uppercase tracking-widest text-primary">Requirement Mapping</span>
+    <h2 class="text-3xl md:text-4xl font-bold mt-3 text-text-main leading-tight">需求总结与功能映射</h2>
+    <p class="text-text-muted mt-3 text-[15px]">基于定量+定性数据的三方验证，将用户痛点精准映射到平台解决方案</p>
+
+    <div class="mt-10 overflow-x-auto">
+      <table class="w-full text-[14px] border-collapse">
+        <thead>
+          <tr class="border-b-2 border-[#F3F0FF]">
+            <th class="text-left py-4 px-5 text-[12px] font-bold uppercase tracking-wider text-text-muted w-[25%]">用户痛点</th>
+            <th class="text-left py-4 px-5 text-[12px] font-bold uppercase tracking-wider text-text-muted w-[30%]">心理 / 场景动机</th>
+            <th class="text-left py-4 px-5 text-[12px] font-bold uppercase tracking-wider text-text-muted w-[45%]">平台解决方案</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-50">
+          <tr class="hover:bg-bg transition-colors">
+            <td class="py-4 px-5 align-top">
+              <div class="flex items-center gap-2">
+                <span class="text-[13px] font-bold text-accent">78.3%</span>
+                <span class="text-[13px] font-semibold text-text-main">队友跑路 / 玩失踪</span>
+              </div>
+              <p class="text-[12px] text-text-muted mt-1">来源：P1, P5 访谈 + 小红书"拖延"47次</p>
+            </td>
+            <td class="py-4 px-5 align-top text-[13px] text-text-muted leading-relaxed">
+              关系型失信（熟人社团中无法追责）→ 需要将隐性信任转化为显性合约。学生对"搭便车者"极度厌恶，但现有渠道无惩罚杠杆。
+            </td>
+            <td class="py-4 px-5 align-top">
+              <div class="flex flex-wrap gap-1.5">
+                <span class="text-[12px] bg-[#F3F0FF] text-primary-deep px-2.5 py-1 rounded-lg font-medium">赛友信用分系统</span>
+                <span class="text-[12px] bg-[#F3F0FF] text-primary-deep px-2.5 py-1 rounded-lg font-medium">退出惩罚机制</span>
+                <span class="text-[12px] bg-[#F3F0FF] text-primary-deep px-2.5 py-1 rounded-lg font-medium">历史参赛记录追溯</span>
+                <span class="text-[12px] bg-[#FFF0F6] text-accent px-2.5 py-1 rounded-lg font-medium">队友互评体系</span>
+              </div>
+            </td>
+          </tr>
+          <tr class="hover:bg-bg transition-colors">
+            <td class="py-4 px-5 align-top">
+              <div class="flex items-center gap-2">
+                <span class="text-[13px] font-bold text-accent">61.5%</span>
+                <span class="text-[13px] font-semibold text-text-main">无法验证真实能力</span>
+              </div>
+              <p class="text-[12px] text-text-muted mt-1">来源：P2 访谈 + 小红书"不靠谱"9次</p>
+            </td>
+            <td class="py-4 px-5 align-top text-[13px] text-text-muted leading-relaxed">
+              技能宣称与真实能力间存在巨大Gap——"精通Python"可能只是上过一门选修课，缺乏可验证的衡量标准。
+            </td>
+            <td class="py-4 px-5 align-top">
+              <div class="flex flex-wrap gap-1.5">
+                <span class="text-[12px] bg-[#F3F0FF] text-primary-deep px-2.5 py-1 rounded-lg font-medium">学信网双重认证</span>
+                <span class="text-[12px] bg-[#F3F0FF] text-primary-deep px-2.5 py-1 rounded-lg font-medium">GitHub/作品集关联</span>
+                <span class="text-[12px] bg-[#F3F0FF] text-primary-deep px-2.5 py-1 rounded-lg font-medium">技能标签分级（自述/验证/权威）</span>
+                <span class="text-[12px] bg-[#FFF0F6] text-accent px-2.5 py-1 rounded-lg font-medium">AI简历解析</span>
+              </div>
+            </td>
+          </tr>
+          <tr class="hover:bg-bg transition-colors">
+            <td class="py-4 px-5 align-top">
+              <div class="flex items-center gap-2">
+                <span class="text-[13px] font-bold text-accent">54.1%</span>
+                <span class="text-[13px] font-semibold text-text-main">跨院系交流壁垒</span>
+              </div>
+              <p class="text-[12px] text-text-muted mt-1">来源：P7, P19 访谈 + 问卷聚类</p>
+            </td>
+            <td class="py-4 px-5 align-top text-[13px] text-text-muted leading-relaxed">
+              社交圈层固化（计科院只认识计科院的人）。低年级学生缺乏跨院系接触的渠道，"社恐"进一步放大壁垒效应。
+            </td>
+            <td class="py-4 px-5 align-top">
+              <div class="flex flex-wrap gap-1.5">
+                <span class="text-[12px] bg-[#F3F0FF] text-primary-deep px-2.5 py-1 rounded-lg font-medium">AI智能画像匹配</span>
+                <span class="text-[12px] bg-[#F3F0FF] text-primary-deep px-2.5 py-1 rounded-lg font-medium">匿名浏览模式</span>
+                <span class="text-[12px] bg-[#F3F0FF] text-primary-deep px-2.5 py-1 rounded-lg font-medium">AI帮写申请</span>
+                <span class="text-[12px] bg-[#FFF0F6] text-accent px-2.5 py-1 rounded-lg font-medium">目标赛事对齐算法</span>
+              </div>
+            </td>
+          </tr>
+          <tr class="hover:bg-bg transition-colors">
+            <td class="py-4 px-5 align-top">
+              <div class="flex items-center gap-2">
+                <span class="text-[13px] font-bold text-accent">45.8%</span>
+                <span class="text-[13px] font-semibold text-text-main">缺乏契约 / 进度拖延</span>
+              </div>
+              <p class="text-[12px] text-text-muted mt-1">来源：小红书"崩溃"9次 + "焦虑"11次</p>
+            </td>
+            <td class="py-4 px-5 align-top text-[13px] text-text-muted leading-relaxed">
+              组队后从"连接"到"协作"的断层。缺乏结构化工具支撑，全靠组长个人推动。目标错配往往数周后才暴露，产生巨大沉没成本。
+            </td>
+            <td class="py-4 px-5 align-top">
+              <div class="flex flex-wrap gap-1.5">
+                <span class="text-[12px] bg-[#F3F0FF] text-primary-deep px-2.5 py-1 rounded-lg font-medium">精简版竞赛SaaS看板</span>
+                <span class="text-[12px] bg-[#F3F0FF] text-primary-deep px-2.5 py-1 rounded-lg font-medium">目标对齐确认流程</span>
+                <span class="text-[12px] bg-[#F3F0FF] text-primary-deep px-2.5 py-1 rounded-lg font-medium">里程碑与Deadline提醒</span>
+                <span class="text-[12px] bg-[#FFF0F6] text-accent px-2.5 py-1 rounded-lg font-medium">任务分配 + 进度追踪</span>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer class="border-t border-gray-100 py-12">
+  <div class="max-w-6xl mx-auto px-4 md:px-6 flex flex-col md:flex-row items-center justify-between gap-6">
+    <div class="flex items-center gap-2.5">
+      <svg width="28" height="28" viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="#6D4AFF"/><path d="M8 22V12l4 6 4-6v10M20 12v10l4-5 4 5V12" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span class="font-bold text-[15px] text-primary-deep">赛友</span>
+      <span class="text-[12px] text-text-muted">| 大学生赛事成长服务平台</span>
+    </div>
+    <div class="flex items-center gap-6 text-[13px] text-text-muted">
+      <span>大学生赛事服务平台的商业化创新实践</span>
+      <span class="hidden md:inline">·</span>
+      <span>AITurk 平台深度访谈 · N=20</span>
+      <span class="hidden md:inline">·</span>
+      <span>问卷 N=1,246</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  function switchTab(idx) {
+    document.getElementById('tab0').classList.add('hidden');
+    document.getElementById('tab1').classList.add('hidden');
+    document.getElementById('tabBtn0').classList.remove('active');
+    document.getElementById('tabBtn1').classList.remove('active');
+    document.getElementById('tab'+idx).classList.remove('hidden');
+    document.getElementById('tabBtn'+idx).classList.add('active');
+  }
+  // Close mobile menu on link click (handled inline) + scroll-triggered chart animation
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('bar-visible'); });
+  }, { threshold: 0.3 });
+  document.querySelectorAll('.bar-fill').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
